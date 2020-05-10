@@ -17,7 +17,8 @@ namespace GigaWebMvc.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Sales Web MVC App made for Djalma to GigaLanchesBar";
+            ViewData["User"] = "denislima11";
 
             return View();
         }
