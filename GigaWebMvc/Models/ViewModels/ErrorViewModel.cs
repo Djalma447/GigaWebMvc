@@ -1,6 +1,6 @@
 using System;
 
-namespace GigaWebMvc.Models
+namespace GigaWebMvc.Models.ViewModels
 {
     public class ErrorViewModel
     {
