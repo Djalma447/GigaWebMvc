@@ -37,7 +37,8 @@ namespace GigaWebMvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<GigaWebMvcContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("GigaWebMvcContext")));
+                    options.UseSqlServer(Configuration.GetConnectionString("GigaWebMvcContext"), builder =>
+                        builder.MigrationsAssembly("GigaWebMvc")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
