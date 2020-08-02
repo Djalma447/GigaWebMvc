@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GigaWebMvc.Models;
 using GigaWebMvc.Models.ViewModels;
 using GigaWebMvc.Services;
+using GigaWebMvc.Services.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GigaWebMvc.Controllers
@@ -78,6 +79,46 @@ namespace GigaWebMvc.Controllers
                 return NotFound();
             }
             return View(obj);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            List<Department> departments = _departmentService.FindAll();
+            SellerFormViewModel viewModel = new SellerFormViewModel { Departments = departments, Seller = obj };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Seller seller, int id)
+        {
+            if (id != seller.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+            _sellerService.Update(seller);
+            return RedirectToAction(nameof(Index));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbConcurrencyException)
+            {
+                return BadRequest();
+            }
         }
     }
 }
